@@ -38,7 +38,7 @@ def to_integer(signal):
     # values between -2^15 and 2^15 - 1.
     return int16(signal*(2**15 - 1))
 
-def ClampZeroCrossing(signal):
+def TrimZeroCrossing(signal):
     i = next(x[0] for x in enumerate(signal) if abs(x[1]) < 100)
     flipped = flip(signal)
 
@@ -52,4 +52,4 @@ def ClampZeroCrossing(signal):
 N = 44100 # samples per secon
 
 data = f(1100, N, 0, 0.1, 1, 1)
-write("siren.wav", N, ClampZeroCrossing(to_integer(data)))
+write("siren.wav", N, TrimZeroCrossing(to_integer(data)))
