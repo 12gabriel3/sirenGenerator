@@ -25,15 +25,11 @@ def cycle(N, V0, Tdischarge, Tcharge, ExtraCycles):
 def f(f_c, N, V0, Tcharge, Tdischarge, Ncycles):
     if(not Ncycles):
         return 0
-    # t    = time
-    # f_c  = carrier frequency
-    # f_m  = modulation frequency
-    # beta = modulation index
     sum = cumsum(cycle(N, V0, Tdischarge, Tcharge, Ncycles - 1).astype(float64) - 1)
     t = arange(N * (Tdischarge + Tcharge) * Ncycles) / N
     if t.size > sum.size:
         t = t[:sum.size]
-    elif t.size > sum.size:
+    elif t.size < sum.size:
         sum = sum[:t.size]
     return signal.sawtooth(2*pi*f_c*t - (sum * 1 / N * -5000), 0.5)
 
@@ -56,5 +52,4 @@ def ClampZeroCrossing(signal):
 N = 44100 # samples per secon
 
 data = f(1100, N, 0, 0.1, 1, 1)
-write("fastestCycle.wav", N, ClampZeroCrossing(to_integer(data)))
-plt.show()
+write("siren.wav", N, ClampZeroCrossing(to_integer(data)))
